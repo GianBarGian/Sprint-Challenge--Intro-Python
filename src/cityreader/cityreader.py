@@ -73,13 +73,26 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
+lat_1 = float(input('please insert lat for a corner: '))
+lng_1 = float(input('please insert lng for a corner: '))
+lat_2 = float(input('please insert lat for another corner: '))
+lng_2 = float(input('please insert lng for another corner: '))
+
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
-  within = []
+  if lat1 > lat2:
+    first_lat = lat2
+    first_lng = lon2
+    second_lat = lat1
+    second_lng = lon1
+  else:
+    first_lat = lat1
+    first_lng = lon1
+    second_lat = lat2
+    second_lng = lon2
 
-  # TODO Ensure that the lat and lon valuse are all floats
-  # Go through each city and check to see if it falls within 
-  # the specified coordinates.
+  within = [city for city in cities if city.lat > first_lat and city.lat < second_lat and city.lon > first_lng and city.lon < second_lng]
 
   return within
+
