@@ -1,6 +1,13 @@
+import csv
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
-
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+  def __str__(self):
+    return f'{self.name}, {self.lat},{self.lon}'
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -20,7 +27,14 @@ def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
-    
+  with open('src/cityreader/cities.csv') as cities_csv:
+    cities_reader = csv.reader(cities_csv, delimiter = ',')
+    line_count = 0
+    for row in cities_reader:
+      if line_count == 0:
+        line_count +=1
+      else:
+        cities.append(City(row[0], float(row[3]), float(row[4])))
     return cities
 
 cityreader(cities)
@@ -59,13 +73,26 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
+lat_1 = float(input('please insert lat for a corner: '))
+lng_1 = float(input('please insert lng for a corner: '))
+lat_2 = float(input('please insert lat for another corner: '))
+lng_2 = float(input('please insert lng for another corner: '))
+
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
-  within = []
+  if lat1 > lat2:
+    first_lat = lat2
+    first_lng = lon2
+    second_lat = lat1
+    second_lng = lon1
+  else:
+    first_lat = lat1
+    first_lng = lon1
+    second_lat = lat2
+    second_lng = lon2
 
-  # TODO Ensure that the lat and lon valuse are all floats
-  # Go through each city and check to see if it falls within 
-  # the specified coordinates.
+  within = [city for city in cities if city.lat > first_lat and city.lat < second_lat and city.lon > first_lng and city.lon < second_lng]
 
   return within
+
